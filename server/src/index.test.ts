@@ -2,6 +2,19 @@ import { apolloServer, LineItem } from "./createApolloServer";
 import { gql } from "apollo-server-express";
 import { createTestClient } from "apollo-server-testing";
 
+it("should scan LineItem", async function() {
+  const { mutate } = createTestClient(await apolloServer);
+  const response = await mutate({
+    mutation: gql`
+      mutation($itemId: String!) {
+        scanLineItem(itemId: $itemId)
+      }
+    `,
+    variables: { itemId: "string" }
+  });
+  expect(response.data.scanLineItem).toBe(true);
+});
+
 it("should query LineItems", async function() {
   const { query } = createTestClient(await apolloServer);
   const response = await query({
@@ -13,7 +26,7 @@ it("should query LineItems", async function() {
       }
     `
   });
-  expect(response.data.lineItems).toContainEqual<LineItem>({ id: "hello" });
+  expect(response.data.lineItems).toContainEqual<LineItem>({ id: "string" });
 });
 it("should query LineItem", async function() {
   const { query } = createTestClient(await apolloServer);
@@ -27,17 +40,5 @@ it("should query LineItem", async function() {
     `,
     variables: { itemId: "string" }
   });
-  expect(response.data.lineItem).toEqual<LineItem>({ id: "hello" });
-});
-it("should scan LineItem", async function() {
-  const { mutate } = createTestClient(await apolloServer);
-  const response = await mutate({
-    mutation: gql`
-      mutation($itemId: String!) {
-        scanLineItem(itemId: $itemId)
-      }
-    `,
-    variables: { itemId: "string" }
-  });
-  expect(response.data.scanLineItem).toBe(true);
+  expect(response.data.lineItem).toEqual<LineItem>({ id: "string" });
 });
