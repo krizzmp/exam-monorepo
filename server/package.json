@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "dependencies": {
+    "apollo-server-express": "latest",
+    "apollo-server-testing": "latest",
+    "graphql": "^14.5.8",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^0.17.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "tslib": "^1.10.0",
+    "typescript": "3.6.4"
+  }
+}
