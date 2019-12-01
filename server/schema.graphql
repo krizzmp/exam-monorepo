@@ -9,7 +9,8 @@ type LineItem {
 }
 
 type Mutation {
-  scanLineItem(itemId: String!): Boolean!
+  scanLineItem(itemId: String!): LineItem!
+  createProduct(itemId: String!): Product!
 }
 
 type Product {

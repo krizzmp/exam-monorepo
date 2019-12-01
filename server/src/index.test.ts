@@ -2,20 +2,39 @@ import { apolloServer } from "./createApolloServer";
 import { gql } from "apollo-server-express";
 import { createTestClient } from "apollo-server-testing";
 
+it("should create product", async function() {
+  const { mutate } = createTestClient(await apolloServer);
+  const response = await mutate({
+    mutation: gql`
+      mutation($itemId: String!) {
+        createProduct(itemId: $itemId) {
+          id
+        }
+      }
+    `,
+    variables: { itemId: "1234" }
+  });
+  expect(response.errors).toBeUndefined();
+  expect(response.data.createProduct.id).toBe("1234");
+});
 it("should scan LineItem", async function() {
   const { mutate } = createTestClient(await apolloServer);
   const response = await mutate({
     mutation: gql`
       mutation s1($itemId: String!, $itemId2: String!) {
-        s1: scanLineItem(itemId: $itemId)
-        s2: scanLineItem(itemId: $itemId2)
+        s1: scanLineItem(itemId: $itemId) {
+          id
+        }
+        s2: scanLineItem(itemId: $itemId2) {
+          id
+        }
       }
     `,
-    variables: { itemId: "1234", itemId2: "12345" }
+    variables: { itemId: "1234", itemId2: "1234" }
   });
   expect(response.errors).toBeUndefined();
-  expect(response.data.s1).toBe(true);
-  expect(response.data.s2).toBe(true);
+  expect(response.data.s1.id).toBe("1");
+  expect(response.data.s2.id).toBe("2");
 });
 
 it("should query LineItems", async function() {
@@ -30,8 +49,8 @@ it("should query LineItems", async function() {
     `
   });
   expect(response.errors).toBeUndefined();
-  expect(response.data.lineItems).toContainEqual({ id: "1234" });
-  expect(response.data.lineItems).toContainEqual({ id: "12345" });
+  expect(response.data.lineItems).toContainEqual({ id: "1" });
+  expect(response.data.lineItems).toContainEqual({ id: "2" });
   expect(response.data.lineItems).toHaveLength(2);
 });
 it("should query LineItem", async function() {
@@ -47,11 +66,11 @@ it("should query LineItem", async function() {
         }
       }
     `,
-    variables: { itemId: "1234" }
+    variables: { itemId: "1" }
   });
   expect(response.errors).toBeUndefined();
   expect(response.data.lineItem).toEqual({
-    id: "1234",
+    id: "1",
     product: { name: "hello" }
   });
 });
