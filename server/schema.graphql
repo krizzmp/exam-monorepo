@@ -10,7 +10,7 @@ type LineItem {
 
 type Mutation {
   scanLineItem(itemId: String!): LineItem!
-  createProduct(itemId: String!): Product!
+  createProduct(price: Int!, name: String!, itemId: String!): Product!
 }
 
 type Product {

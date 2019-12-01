@@ -6,13 +6,13 @@ it("should create product", async function() {
   const { mutate } = createTestClient(await apolloServer);
   const response = await mutate({
     mutation: gql`
-      mutation($itemId: String!) {
-        createProduct(itemId: $itemId) {
+      mutation($itemId: String!, $name: String!, $price: Int!) {
+        createProduct(itemId: $itemId, name: $name, price: $price) {
           id
         }
       }
     `,
-    variables: { itemId: "1234" }
+    variables: { itemId: "1234", name: "test", price: 300_00 }
   });
   expect(response.errors).toBeUndefined();
   expect(response.data.createProduct.id).toBe("1234");
@@ -71,6 +71,6 @@ it("should query LineItem", async function() {
   expect(response.errors).toBeUndefined();
   expect(response.data.lineItem).toEqual({
     id: "1",
-    product: { name: "hello" }
+    product: { name: "test" }
   });
 });
