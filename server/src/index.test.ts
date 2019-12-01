@@ -6,13 +6,13 @@ it("should create product", async function() {
   const { mutate } = createTestClient(await apolloServer);
   const response = await mutate({
     mutation: gql`
-      mutation($itemId: String!, $name: String!, $price: Int!) {
-        createProduct(itemId: $itemId, name: $name, price: $price) {
+      mutation($id: String!, $name: String!, $price: Int!) {
+        createProduct(id: $id, name: $name, price: $price) {
           id
         }
       }
     `,
-    variables: { itemId: "1234", name: "test", price: 300_00 }
+    variables: { id: "1234", name: "test", price: 300_00 }
   });
   expect(response.errors).toBeUndefined();
   expect(response.data.createProduct.id).toBe("1234");
@@ -21,16 +21,16 @@ it("should scan LineItem", async function() {
   const { mutate } = createTestClient(await apolloServer);
   const response = await mutate({
     mutation: gql`
-      mutation s1($itemId: String!, $itemId2: String!) {
-        s1: scanLineItem(itemId: $itemId) {
+      mutation s1($productId: String!) {
+        s1: scanLineItem(productId: $productId) {
           id
         }
-        s2: scanLineItem(itemId: $itemId2) {
+        s2: scanLineItem(productId: $productId) {
           id
         }
       }
     `,
-    variables: { itemId: "1234", itemId2: "1234" }
+    variables: { productId: "1234", productId2: "1234" }
   });
   expect(response.errors).toBeUndefined();
   expect(response.data.s1.id).toBe("1");
@@ -57,8 +57,8 @@ it("should query LineItem", async function() {
   const { query } = createTestClient(await apolloServer);
   const response = await query({
     query: gql`
-      query($itemId: String!) {
-        lineItem(id: $itemId) {
+      query($id: String!) {
+        lineItem(id: $id) {
           id
           product {
             name
@@ -66,7 +66,7 @@ it("should query LineItem", async function() {
         }
       }
     `,
-    variables: { itemId: "1" }
+    variables: { id: "1" }
   });
   expect(response.errors).toBeUndefined();
   expect(response.data.lineItem).toEqual({

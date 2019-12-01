@@ -13,9 +13,17 @@ type Lazy<T extends object> = Promise<T> | T;
 @ObjectType()
 @Entity()
 export class Product {
-  @Field() @PrimaryColumn() id: string = "hello";
-  @Field() @Column() name: string;
-  @Field() @Column("int") price: number;
+  @Field()
+  @PrimaryColumn()
+  id: string;
+
+  @Field()
+  @Column()
+  name: string;
+
+  @Field()
+  @Column("int")
+  price: number;
 
   @Field(() => [LineItem])
   @OneToMany(
@@ -29,7 +37,9 @@ export class Product {
 @ObjectType()
 @Entity()
 export class LineItem {
-  @Field() @PrimaryGeneratedColumn() id: string;
+  @Field()
+  @PrimaryGeneratedColumn()
+  id: string;
   @Field(() => Product)
   @ManyToOne(
     () => Product,

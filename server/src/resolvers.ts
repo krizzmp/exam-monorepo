@@ -4,22 +4,20 @@ import { LineItem, Product } from "./entities";
 
 @Resolver()
 export class RootResolver {
-  repository = getRepository(LineItem);
-
   @Query(() => [LineItem])
   lineItems() {
-    return this.repository.find();
+    return getRepository(LineItem).find();
   }
 
   @Query(() => LineItem)
   lineItem(@Arg("id") id: string) {
-    return this.repository.findOne(id);
+    return getRepository(LineItem).findOne(id);
   }
 
   @Mutation(() => LineItem)
-  async scanLineItem(@Arg("itemId") itemId: string): Promise<LineItem> {
+  async scanLineItem(@Arg("productId") productId: string): Promise<LineItem> {
     let productRepo = getRepository(Product);
-    let product = await productRepo.findOneOrFail(itemId);
+    let product = await productRepo.findOneOrFail(productId);
     let lineItemRepository = getRepository(LineItem);
     let lineItem = lineItemRepository.create({ product });
     return lineItemRepository.save(lineItem);
@@ -27,7 +25,7 @@ export class RootResolver {
 
   @Mutation(() => Product)
   async createProduct(
-    @Arg("itemId") id: string,
+    @Arg("id") id: string,
     @Arg("name") name: string,
     @Arg("price", () => Int) price: number
   ): Promise<Product> {
