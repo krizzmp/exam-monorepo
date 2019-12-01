@@ -5,10 +5,18 @@
 
 type LineItem {
   id: String!
+  product: Product!
 }
 
 type Mutation {
   scanLineItem(itemId: String!): Boolean!
+}
+
+type Product {
+  id: String!
+  name: String!
+  price: Float!
+  lineItems: [LineItem!]!
 }
 
 type Query {
