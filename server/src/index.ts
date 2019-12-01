@@ -5,9 +5,8 @@ import express from "express";
   const app = express();
   const path = '/graphql';
 
-  let apolloServer = await apolloServerPromise;
-  (apolloServer).applyMiddleware({ app,path });
-
+  const apolloServer = await apolloServerPromise;
+  apolloServer.applyMiddleware({ app,path });
 
   app.listen({ port: 4000 }, () =>
     console.log(`🚀 Server ready at http://localhost:4000${apolloServer.graphqlPath}`)
