@@ -18,30 +18,30 @@ export class LineItem {
   id: string = "hello";
 }
 
+@Resolver()
+class LineItemResolver {
+  repository = getRepository(LineItem);
+  @Query(() => [LineItem]) lineItems() {
+    return this.repository.find();
+  }
+  @Query(() => LineItem) lineItem(@Arg("id") id: string) {
+    return this.repository.findOne(id);
+  }
+  @Mutation(() => Boolean)
+  async scanLineItem(@Arg("itemId") itemId: string): Promise<boolean> {
+    const t = new LineItem();
+    t.id = itemId;
+    await this.repository.save(t);
+    return true;
+  }
+}
+
 export async function createApolloServer() {
   await createConnection({
     type: "sqljs",
     entities: [LineItem],
     synchronize: true
   });
-
-  @Resolver()
-  class LineItemResolver {
-    repository = getRepository(LineItem);
-    @Query(() => [LineItem]) lineItems() {
-      return this.repository.find();
-    }
-    @Query(() => LineItem) lineItem(@Arg("id") id: string) {
-      return this.repository.findOne(id);
-    }
-    @Mutation()
-    scanLineItem(@Arg("itemId") itemId: string): boolean {
-      const t = new LineItem();
-      t.id = itemId;
-      this.repository.save(t);
-      return true;
-    }
-  }
 
   return new ApolloServer({
     schema: await buildSchema({

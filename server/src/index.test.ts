@@ -6,13 +6,15 @@ it("should scan LineItem", async function() {
   const { mutate } = createTestClient(await apolloServer);
   const response = await mutate({
     mutation: gql`
-      mutation($itemId: String!) {
-        scanLineItem(itemId: $itemId)
+      mutation s1($itemId: String!,$itemId2: String!) {
+        s1:scanLineItem(itemId: $itemId)
+        s2:scanLineItem(itemId: $itemId2)
       }
     `,
-    variables: { itemId: "string" }
+    variables: { itemId: "1234", itemId2: "12345" }
   });
-  expect(response.data.scanLineItem).toBe(true);
+  expect(response.data.s1).toBe(true);
+  expect(response.data.s2).toBe(true);
 });
 
 it("should query LineItems", async function() {
@@ -26,7 +28,9 @@ it("should query LineItems", async function() {
       }
     `
   });
-  expect(response.data.lineItems).toContainEqual<LineItem>({ id: "string" });
+  expect(response.data.lineItems).toContainEqual<LineItem>({ id: "1234" });
+  expect(response.data.lineItems).toContainEqual<LineItem>({ id: "12345" });
+  expect(response.data.lineItems).toHaveLength(2)
 });
 it("should query LineItem", async function() {
   const { query } = createTestClient(await apolloServer);
@@ -38,7 +42,7 @@ it("should query LineItem", async function() {
         }
       }
     `,
-    variables: { itemId: "string" }
+    variables: { itemId: "1234" }
   });
-  expect(response.data.lineItem).toEqual<LineItem>({ id: "string" });
+  expect(response.data.lineItem).toEqual<LineItem>({ id: "1234" });
 });
