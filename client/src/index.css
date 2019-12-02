@@ -13,8 +13,3 @@ body {
   background-color: var(--background-color);
   color: var(--foregound-color);
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
