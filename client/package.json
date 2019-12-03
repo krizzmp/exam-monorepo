@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ericblade/quagga2": "latest",
     "@testing-library/jest-dom": "^4.2.0",
     "@testing-library/react": "^9.3.0",
     "@testing-library/user-event": "^7.1.2",
@@ -11,12 +12,15 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "navi": "^0.13.6",
+    "quagga": "latest",
+    "ramda": "^0.26.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-navi": "^0.13.6",
+    "react-navi-helmet": "latest",
     "react-scripts": "3.3.0-next.62",
-    "typescript": "~3.7.2",
-    "react-navi-helmet": "latest"
+    "react-use": "^13.10.0",
+    "typescript": "~3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.26.36"
   }
 }
