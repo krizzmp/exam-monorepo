@@ -2,6 +2,7 @@ import { Field, ObjectType } from "type-graphql";
 import {
   Column,
   Entity,
+  Exclusion,
   ManyToOne,
   OneToMany,
   PrimaryColumn,
@@ -32,6 +33,30 @@ export class Product {
     { lazy: true }
   )
   lineItems: Lazy<LineItem[]>;
+
+  @OneToMany(
+    () => Price,
+    price => price.product,
+    { lazy: true }
+  )
+  prices: Lazy<Price[]>;
+}
+@Entity()
+@Exclusion(`USING gist ("productId" WITH =, "dateRange" WITH &&)`)
+export class Price {
+  @PrimaryGeneratedColumn()
+  id: string;
+  @Column("int")
+  value: number;
+  @Column("daterange")
+  dateRange: string;
+
+  @ManyToOne(
+    () => Product,
+    product => product.prices,
+    { lazy: true }
+  )
+  product: Lazy<Product>;
 }
 
 @ObjectType()

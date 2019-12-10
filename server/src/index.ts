@@ -1,14 +1,14 @@
 import { apolloServer as apolloServerPromise } from "./createApolloServer";
 import express from "express";
 import { createConnection } from "typeorm";
-import { LineItem, Product } from "./entities";
+import { LineItem, Price, Product } from "./entities";
 
 (async function() {
   const app = express();
   const path = "/graphql";
   await createConnection({
     type: "sqljs",
-    entities: [LineItem, Product],
+    entities: [LineItem, Product, Price],
     synchronize: true
   });
   const apolloServer = await apolloServerPromise;
