@@ -22,5 +22,6 @@ type Product {
 
 type Query {
   lineItems: [LineItem!]!
+  products: [Product!]!
   lineItem(id: String!): LineItem!
 }

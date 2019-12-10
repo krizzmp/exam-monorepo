@@ -11,16 +11,23 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "final-form": "^4.18.6",
+    "formik": "latest",
     "navi": "^0.13.6",
     "quagga": "latest",
     "ramda": "^0.26.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-final-form": "latest",
     "react-navi": "^0.13.6",
     "react-navi-helmet": "latest",
     "react-scripts": "3.3.0-next.62",
     "react-use": "^13.10.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "yup": "latest",
+    "promise-all-properties": "latest",
+    "apollo-boost": "latest",
+    "@apollo/react-hooks": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,6 +51,7 @@
     ]
   },
   "devDependencies": {
-    "@types/ramda": "^0.26.36"
+    "@types/ramda": "^0.26.36",
+    "@types/yup": "^0.26.26"
   }
 }

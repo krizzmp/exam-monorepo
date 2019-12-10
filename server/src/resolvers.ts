@@ -8,6 +8,10 @@ export class RootResolver {
   lineItems() {
     return getRepository(LineItem).find();
   }
+  @Query(() => [Product])
+  products() {
+    return getRepository(Product).find();
+  }
 
   @Query(() => LineItem)
   lineItem(@Arg("id") id: string) {
