@@ -74,3 +74,24 @@ it("should query LineItem", async function() {
     product: { name: "test" }
   });
 });
+
+it("should query Products", async function() {
+  const { query } = createTestClient(await apolloServer);
+  const response = await query({
+    query: gql`
+      query {
+        products {
+          id
+          name
+          price
+        }
+      }
+    `
+  });
+  expect(response.errors).toBeUndefined();
+  expect(response.data.products).toContainEqual({
+    id: "1234",
+    name: "test",
+    price: 300_00
+  });
+});
