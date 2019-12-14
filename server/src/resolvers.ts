@@ -14,12 +14,15 @@ export class RootResolver {
   }
 
   @Query(() => LineItem)
-  lineItem(@Arg("id") id: string) {
+  lineItem(@Arg("id", () => Int) id: number) {
     return getRepository(LineItem).findOne(id);
   }
 
   @Mutation(() => LineItem)
-  async scanLineItem(@Arg("productId") productId: string): Promise<LineItem> {
+  async scanLineItem(
+    @Arg("productId") productId: string,
+    @Arg("cartId", () => Int) cartId: number
+  ): Promise<LineItem> {
     let productRepo = getRepository(Product);
     let product = await productRepo.findOneOrFail(productId);
     let lineItemRepository = getRepository(LineItem);
@@ -33,7 +36,7 @@ export class RootResolver {
     return storeRepo.save(lineItem);
   }
   @Mutation(() => Cart)
-  async createCart(@Arg("storeId") storeId: string): Promise<Cart> {
+  async createCart(@Arg("storeId", () => Int) storeId: number): Promise<Cart> {
     let cartRepository = getRepository(Cart);
     let storeRepository = getRepository(Store);
     let store = await storeRepository.findOneOrFail(storeId);

@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 import {
   Column,
   Entity,
@@ -45,7 +45,7 @@ export class Product {
 @Exclusion(`USING gist ("productId" WITH =, "dateRange" WITH &&)`)
 export class Price {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
   @Column("int")
   value: number;
   @Column("daterange")
@@ -62,9 +62,9 @@ export class Price {
 @ObjectType()
 @Entity()
 export class LineItem {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
   @Field(() => Product)
   @ManyToOne(
     () => Product,
@@ -77,9 +77,9 @@ export class LineItem {
 @ObjectType()
 @Entity()
 export class Store {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
   @Field()
   @Column()
   name: string;
@@ -95,9 +95,9 @@ export class Store {
 @ObjectType()
 @Entity()
 export class Cart {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Field(() => Store)
   @ManyToOne(

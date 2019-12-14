@@ -4,19 +4,19 @@
 # -----------------------------------------------
 
 type Cart {
-  id: String!
+  id: Int!
   store: Store!
 }
 
 type LineItem {
-  id: String!
+  id: Int!
   product: Product!
 }
 
 type Mutation {
-  scanLineItem(productId: String!): LineItem!
+  scanLineItem(cartId: Int!, productId: String!): LineItem!
   createStore(name: String!): Store!
-  createCart(storeId: String!): Cart!
+  createCart(storeId: Int!): Cart!
   createProduct(price: Int!, name: String!, id: String!): Product!
 }
 
@@ -30,11 +30,11 @@ type Product {
 type Query {
   lineItems: [LineItem!]!
   products: [Product!]!
-  lineItem(id: String!): LineItem!
+  lineItem(id: Int!): LineItem!
 }
 
 type Store {
-  id: String!
+  id: Int!
   name: String!
   stores: Cart!
 }
