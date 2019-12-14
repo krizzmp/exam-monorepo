@@ -1,45 +1,18 @@
 import { apolloServer } from "../createApolloServer";
 import { gql } from "apollo-server-express";
 import { createTestClient } from "apollo-server-testing";
-import { createConnection, getConnection, getRepository } from "typeorm";
-import * as entities from "../entities";
-import { LineItem, Price, Product } from "../entities";
-function ProductFactory(
-  product: Partial<Product> = {
-    id: "1234567890123",
-    name: "testy lemon",
-    price: 20_00
-  }
-) {
-  let repository = getRepository(Product);
-  let product1 = repository.create(product);
-  return repository.save(product1);
-}
-async function LineItemFactory(id = "1") {
-  const product = {
-    id: id,
-    product: await ProductFactory()
-  };
-  let repository = getRepository(LineItem);
-  let product1 = repository.create(product);
-  return repository.save(product1);
-}
-function createTestConnection() {
-  return createConnection({
-    type: "postgres",
-    url: "postgresql://localhost:5432/exam_test",
-    dropSchema: true,
-    entities: Object.values(entities),
-    synchronize: true,
-    logging: false
-  });
-}
+import { getRepository } from "typeorm";
+import { Price, Product } from "../entities";
+import { ProductFactory } from "./factories/productFactory";
+import { LineItemFactory } from "./factories/lineItemFactory";
+import {
+  closeTestConnection,
+  createTestConnection
+} from "./factories/testConnectionFactory";
+
 describe("product", function() {
   beforeEach(createTestConnection);
-  afterEach(() => {
-    let conn = getConnection();
-    return conn.close();
-  });
+  afterEach(closeTestConnection);
   it("should create product", async function() {
     const { mutate } = createTestClient(await apolloServer);
     const response = await mutate({
@@ -77,12 +50,10 @@ describe("product", function() {
     });
   });
 });
+
 describe("lineItem", function() {
   beforeEach(createTestConnection);
-  afterEach(() => {
-    let conn = getConnection();
-    return conn.close();
-  });
+  afterEach(closeTestConnection);
   it("should scan LineItem", async function() {
     await ProductFactory();
     const { mutate } = createTestClient(await apolloServer);
@@ -146,10 +117,7 @@ describe("lineItem", function() {
 });
 describe("price", function() {
   beforeEach(createTestConnection);
-  afterEach(() => {
-    let conn = getConnection();
-    return conn.close();
-  });
+  afterEach(closeTestConnection);
   it("should Price", async function() {
     let repository = getRepository(Price);
     let product1 = repository.create({
