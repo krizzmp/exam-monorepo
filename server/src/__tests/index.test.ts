@@ -1,8 +1,9 @@
-import { apolloServer } from "./createApolloServer";
+import { apolloServer } from "../createApolloServer";
 import { gql } from "apollo-server-express";
 import { createTestClient } from "apollo-server-testing";
 import { createConnection, getConnection, getRepository } from "typeorm";
-import { LineItem, Price, Product } from "./entities";
+import * as entities from "../entities";
+import { LineItem, Price, Product } from "../entities";
 function ProductFactory(
   product: Partial<Product> = {
     id: "1234567890123",
@@ -28,7 +29,7 @@ function createTestConnection() {
     type: "postgres",
     url: "postgresql://localhost:5432/exam_test",
     dropSchema: true,
-    entities: [LineItem, Product, Price],
+    entities: Object.values(entities),
     synchronize: true,
     logging: false
   });
