@@ -7,9 +7,9 @@ import { apolloServer } from "../createApolloServer";
 import { gql } from "apollo-server-express";
 import { ProductFactory } from "./factories/productFactory";
 
+beforeEach(createTestConnection);
+afterEach(closeTestConnection);
 describe("product", function() {
-  beforeEach(createTestConnection);
-  afterEach(closeTestConnection);
   it("should create product", async function() {
     const { mutate } = createTestClient(await apolloServer);
     const response = await mutate({

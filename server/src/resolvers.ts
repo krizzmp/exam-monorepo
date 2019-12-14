@@ -1,6 +1,6 @@
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getRepository } from "typeorm";
-import { LineItem, Product } from "./entities";
+import { Cart, LineItem, Product, Store } from "./entities";
 
 @Resolver()
 export class RootResolver {
@@ -25,6 +25,20 @@ export class RootResolver {
     let lineItemRepository = getRepository(LineItem);
     let lineItem = lineItemRepository.create({ product });
     return lineItemRepository.save(lineItem);
+  }
+  @Mutation(() => Store)
+  async createStore(@Arg("name") name: string): Promise<Store> {
+    let storeRepo = getRepository(Store);
+    let lineItem = storeRepo.create({ name });
+    return storeRepo.save(lineItem);
+  }
+  @Mutation(() => Cart)
+  async createCart(@Arg("storeId") storeId: string): Promise<Cart> {
+    let cartRepository = getRepository(Cart);
+    let storeRepository = getRepository(Store);
+    let store = await storeRepository.findOneOrFail(storeId);
+    let cart = cartRepository.create({ store });
+    return cartRepository.save(cart);
   }
 
   @Mutation(() => Product)

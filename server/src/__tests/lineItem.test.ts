@@ -7,10 +7,9 @@ import { createTestClient } from "apollo-server-testing";
 import { apolloServer } from "../createApolloServer";
 import { gql } from "apollo-server-express";
 import { LineItemFactory } from "./factories/lineItemFactory";
-
+beforeEach(createTestConnection);
+afterEach(closeTestConnection);
 describe("lineItem", function() {
-  beforeEach(createTestConnection);
-  afterEach(closeTestConnection);
   it("should scan LineItem", async function() {
     await ProductFactory();
     const { mutate } = createTestClient(await apolloServer);

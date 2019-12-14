@@ -73,3 +73,37 @@ export class LineItem {
   )
   product: Lazy<Product>;
 }
+
+@ObjectType()
+@Entity()
+export class Store {
+  @Field()
+  @PrimaryGeneratedColumn()
+  id: string;
+  @Field()
+  @Column()
+  name: string;
+  @Field(() => Cart)
+  @OneToMany(
+    () => Cart,
+    cart => cart.store,
+    { lazy: true }
+  )
+  stores: Lazy<Cart[]>;
+}
+
+@ObjectType()
+@Entity()
+export class Cart {
+  @Field()
+  @PrimaryGeneratedColumn()
+  id: string;
+
+  @Field(() => Store)
+  @ManyToOne(
+    () => Store,
+    store => store.stores,
+    { lazy: true }
+  )
+  store: Lazy<Store>;
+}
