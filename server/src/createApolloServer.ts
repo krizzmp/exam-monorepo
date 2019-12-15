@@ -10,7 +10,7 @@ export async function createApolloServer() {
       emitSchemaFile: {
         path: path.resolve(__dirname, "../schema.graphql")
       },
-      resolvers: [RootResolver]
+      resolvers: [RootResolver],
     }),
     context: ({ req, res }) => ({ req, res })
   });

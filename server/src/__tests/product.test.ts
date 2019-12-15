@@ -1,16 +1,11 @@
-import {
-  closeTestConnection,
-  createTestConnection
-} from "./factories/testConnectionFactory";
 import { createTestClient } from "apollo-server-testing";
 import { apolloServer } from "../createApolloServer";
 import { gql } from "apollo-server-express";
 import { ProductFactory } from "./factories/productFactory";
+import {db_it} from "./helpers";
 
-beforeEach(createTestConnection);
-afterEach(closeTestConnection);
 describe("product", function() {
-  it("should create product", async function() {
+  db_it("should create product", async function() {
     const { mutate } = createTestClient(await apolloServer);
     const response = await mutate({
       mutation: gql`
@@ -25,7 +20,7 @@ describe("product", function() {
     expect(response.errors).toBeUndefined();
     expect(response.data.createProduct.id).toBe("1234");
   });
-  it("should query Products", async function() {
+    db_it("should query Products", async function() {
     await ProductFactory();
     const { query } = createTestClient(await apolloServer);
     const response = await query({

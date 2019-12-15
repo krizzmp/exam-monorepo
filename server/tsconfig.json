@@ -10,6 +10,7 @@
     "emitDecoratorMetadata": true,
     "noEmit": true,
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noImplicitAny": true
   }
 }

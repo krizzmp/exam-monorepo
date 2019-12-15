@@ -1,18 +1,21 @@
 import {createConnection, getConnection} from "typeorm";
 import * as entities from "../../entities";
 
-export function createTestConnection() {
-  return createConnection({
+export async function createTestConnection() {
+  await createConnection({
     type: "postgres",
     url: "postgresql://localhost:5432/exam_test",
-    dropSchema: true,
     entities: Object.values(entities),
-    synchronize: true,
     logging: false,
   });
+  console.log("con createed");
+  await getConnection().synchronize(true);
+  console.log("con synchronized");
+
 }
 
-export function closeTestConnection() {
+export async function closeTestConnection() {
   let conn = getConnection();
-  return conn.close();
+  await conn.close();
+  console.log("con closed");
 }

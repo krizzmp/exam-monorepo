@@ -1,6 +1,22 @@
-import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Field,
+  Int,
+  Mutation,
+  ObjectType,
+  Publisher,
+  PubSub,
+  Query,
+  Resolver,
+  Subscription
+} from "type-graphql";
 import { getRepository } from "typeorm";
 import { Cart, LineItem, Product, Store } from "./entities";
+@ObjectType()
+class Notification {
+  @Field()
+  name: string;
+}
 
 @Resolver()
 export class RootResolver {
@@ -48,7 +64,8 @@ export class RootResolver {
   async createProduct(
     @Arg("id") id: string,
     @Arg("name") name: string,
-    @Arg("price", () => Int) price: number
+    @Arg("price", () => Int) price: number,
+    @PubSub("NOTIFICATIONS") publish: Publisher<Notification>
   ): Promise<Product> {
     let productRepo = getRepository(Product);
     let product = productRepo.create({
@@ -56,6 +73,15 @@ export class RootResolver {
       name,
       price
     });
+    await publish({ name: "4321" });
     return await productRepo.save(product);
+  }
+  @Subscription({
+    topics: "NOTIFICATIONS" // single topic
+  })
+  test(): Notification {
+    let notification = new Notification();
+    notification.name = "asdf";
+    return notification;
   }
 }

@@ -20,6 +20,10 @@ type Mutation {
   createProduct(price: Int!, name: String!, id: String!): Product!
 }
 
+type Notification {
+  name: String!
+}
+
 type Product {
   id: String!
   name: String!
@@ -37,4 +41,8 @@ type Store {
   id: Int!
   name: String!
   stores: Cart!
+}
+
+type Subscription {
+  test: Notification!
 }

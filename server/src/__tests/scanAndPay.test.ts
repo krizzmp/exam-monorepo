@@ -1,17 +1,13 @@
-import {
-  closeTestConnection,
-  createTestConnection
-} from "./factories/testConnectionFactory";
 import { createTestClient } from "apollo-server-testing";
 import { apolloServer } from "../createApolloServer";
 import { gql } from "apollo-server-express";
 import { ProductFactory } from "./factories/productFactory";
-
-beforeEach(createTestConnection);
-afterEach(closeTestConnection);
+import {db_it} from "./helpers";
 describe("scan and pay", function() {
-  it("should Price", async function() {
-    const { mutate } = createTestClient(await apolloServer);
+  db_it("should Price", async function() {
+    console.log("start test");
+    let server = await apolloServer;
+    const { mutate } = createTestClient(server);
 
     async function createStore() {
       const response = await mutate({

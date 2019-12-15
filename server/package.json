@@ -8,15 +8,19 @@
     "dev": "ts-node-dev ./src/index.ts"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.5.4",
+    "apollo-link-ws": "latest",
     "apollo-server-express": "^2.9.12",
     "apollo-server-testing": "^2.9.12",
     "express": "^4.17.1",
     "graphql": "^14.5.8",
+    "node-fetch": "latest",
     "pg": "^7.14.0",
     "reflect-metadata": "^0.1.13",
     "sql.js": "^1.0.1",
     "type-graphql": "^0.17.5",
-    "typeorm": "^0.2.21"
+    "typeorm": "^0.2.21",
+    "apollo-server": "latest"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",

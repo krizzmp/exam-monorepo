@@ -1,22 +1,30 @@
-import { apolloServer as apolloServerPromise } from "./createApolloServer";
-import express from "express";
 import { createConnection } from "typeorm";
 import * as entities from "./entities";
+import {ApolloServer} from "apollo-server";
+import {buildSchema} from "type-graphql";
+import {RootResolver} from "./resolvers";
 
 (async function() {
-  const app = express();
-  const path = "/graphql";
   await createConnection({
-    type: "sqljs",
+    type: "postgres",
+    url: "postgresql://localhost:5432/exam_test",
+    dropSchema: true,
     entities: Object.values(entities),
-    synchronize: true
+    synchronize: true,
+    logging: false
   });
-  const apolloServer = await apolloServerPromise;
-  apolloServer.applyMiddleware({ app, path });
+  // const apolloServer = await apolloServerPromise;
+  const server = new ApolloServer({
+    schema:await buildSchema({
+      resolvers: [RootResolver],
+    }),
+    playground: true,
+    // you can pass the endpoint path for subscriptions
+    // otherwise it will be the same as main graphql endpoint
+    // subscriptions: "/subscriptions",
+  });
+  // apolloServer.applyMiddleware({ app, path });
 
-  app.listen({ port: 4000 }, () =>
-    console.log(
-      `🚀 Server ready at http://localhost:4000${apolloServer.graphqlPath}`
-    )
-  );
+  let serverInfo = await server.listen({port: 4000});
+  console.log(`🚀 Server ready at ${serverInfo.url}`);
 })();
