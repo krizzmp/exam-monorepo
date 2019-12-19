@@ -10,8 +10,9 @@ import {
   Resolver,
   Subscription
 } from "type-graphql";
-import { getRepository } from "typeorm";
 import { Cart, LineItem, Product, Store } from "./entities";
+import { getRepo } from "./__tests/helpers";
+
 @ObjectType()
 class Notification {
   @Field()
@@ -22,16 +23,16 @@ class Notification {
 export class RootResolver {
   @Query(() => [LineItem])
   lineItems() {
-    return getRepository(LineItem).find();
+    return getRepo(LineItem).find();
   }
   @Query(() => [Product])
-  products() {
-    return getRepository(Product).find();
+  async products(): Promise<Product[]> {
+    return await getRepo(Product).find();
   }
 
   @Query(() => LineItem)
   lineItem(@Arg("id", () => Int) id: number) {
-    return getRepository(LineItem).findOne(id);
+    return getRepo(LineItem).findOne(id);
   }
 
   @Mutation(() => LineItem)
@@ -39,25 +40,20 @@ export class RootResolver {
     @Arg("productId") productId: string,
     @Arg("cartId", () => Int) cartId: number
   ): Promise<LineItem> {
-    let productRepo = getRepository(Product);
-    let product = await productRepo.findOneOrFail(productId);
-    let lineItemRepository = getRepository(LineItem);
-    let lineItem = lineItemRepository.create({ product });
-    return lineItemRepository.save(lineItem);
+    let product = await getRepo(Product).findOneOrFail(productId);
+    let lineItem = getRepo(LineItem).create({ product });
+    return getRepo(LineItem).save(lineItem);
   }
   @Mutation(() => Store)
   async createStore(@Arg("name") name: string): Promise<Store> {
-    let storeRepo = getRepository(Store);
-    let lineItem = storeRepo.create({ name });
-    return storeRepo.save(lineItem);
+    let lineItem = getRepo(Store).create({ name });
+    return getRepo(Store).save(lineItem);
   }
   @Mutation(() => Cart)
   async createCart(@Arg("storeId", () => Int) storeId: number): Promise<Cart> {
-    let cartRepository = getRepository(Cart);
-    let storeRepository = getRepository(Store);
-    let store = await storeRepository.findOneOrFail(storeId);
-    let cart = cartRepository.create({ store });
-    return cartRepository.save(cart);
+    let store = await getRepo(Store).findOneOrFail(storeId);
+    let cart = getRepo(Cart).create({ store });
+    return getRepo(Cart).save(cart);
   }
 
   @Mutation(() => Product)
@@ -67,14 +63,13 @@ export class RootResolver {
     @Arg("price", () => Int) price: number,
     @PubSub("NOTIFICATIONS") publish: Publisher<Notification>
   ): Promise<Product> {
-    let productRepo = getRepository(Product);
-    let product = productRepo.create({
+    let product = getRepo(Product).create({
       id,
       name,
       price
     });
     await publish({ name: "4321" });
-    return await productRepo.save(product);
+    return await getRepo(Product).save(product);
   }
   @Subscription({
     topics: "NOTIFICATIONS" // single topic

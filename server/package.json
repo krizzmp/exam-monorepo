@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/node-fetch": "^2.5.4",
     "apollo-link-ws": "latest",
+    "apollo-server": "latest",
     "apollo-server-express": "^2.9.12",
     "apollo-server-testing": "^2.9.12",
     "express": "^4.17.1",
@@ -17,10 +18,11 @@
     "node-fetch": "latest",
     "pg": "^7.14.0",
     "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.3",
     "sql.js": "^1.0.1",
     "type-graphql": "^0.17.5",
-    "typeorm": "^0.2.21",
-    "apollo-server": "latest"
+    "typedi": "latest",
+    "typeorm": "^0.2.21"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",

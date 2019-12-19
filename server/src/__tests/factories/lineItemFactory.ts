@@ -1,13 +1,12 @@
 import { ProductFactory } from "./productFactory";
-import { getRepository } from "typeorm";
 import { LineItem } from "../../entities";
+import { getRepo } from "../helpers";
 
-export async function LineItemFactory(id = 1) {
-  const product = {
-    id: id,
+export async function LineItemFactory() {
+  const lineItemBase = {
     product: await ProductFactory()
   };
-  let repository = getRepository(LineItem);
-  let product1 = repository.create(product);
-  return repository.save(product1);
+  let lineItemRepository = getRepo(LineItem);
+  let lineItem = lineItemRepository.create(lineItemBase);
+  return lineItemRepository.save(lineItem);
 }

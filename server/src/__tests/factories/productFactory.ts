@@ -1,20 +1,20 @@
 import { Cart, Product, Store } from "../../entities";
-import { getRepository } from "typeorm";
+import { getRepo } from "../helpers";
 
-export function ProductFactory(
+export async function ProductFactory(
   product: Partial<Product> = {
     id: "1234567890123",
     name: "testy lemon",
     price: 20_00
   }
 ) {
-  let repository = getRepository(Product);
-  let product1 = repository.create(product);
-  return repository.save(product1);
+  let productRepository = getRepo(Product);
+  let product1 = productRepository.create(product);
+  return await productRepository.save(product1);
 }
 export async function CartFactory() {
-  let cartRepository = getRepository(Cart);
-  let storeRepository = getRepository(Store);
+  let cartRepository = getRepo(Cart);
+  let storeRepository = getRepo(Store);
 
   let store_ = storeRepository.create({ name: "asd" });
   let store = await storeRepository.save(store_);
